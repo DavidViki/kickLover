@@ -3,6 +3,25 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const Footer = () => {
+  const socialLinks = [
+    {
+      icon: FaFacebook,
+      link: "https://facebook.com",
+    },
+    {
+      icon: FaTwitter,
+      link: "https://twitter.com",
+    },
+    {
+      icon: FaInstagram,
+      link: "https://instagram.com",
+    },
+    {
+      icon: FaLinkedin,
+      link: "https://linkedin.com",
+    },
+  ];
+
   return (
     <footer className="bg-gray-100 text-gray-800 py-8 dark:bg-gray-900 dark:text-gray-300">
       <div className="max-w-6xl mx-auto px-4 md:flex md:justify-between md:items-start">
@@ -51,19 +70,19 @@ const Footer = () => {
             Follow Us
           </h3>
           <div className="flex space-x-4">
-            {[FaFacebook, FaTwitter, FaInstagram, FaLinkedin].map(
-              (Icon, index) => (
-                <motion.a
-                  key={index}
-                  href="#"
-                  className="text-gray-900 dark:hover:text-white transition-colors"
-                  whileHover={{ scale: 1.2, color: "#ffffff" }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Icon size={20} />
-                </motion.a>
-              )
-            )}
+            {socialLinks.map(({ icon: Icon, link }, index) => (
+              <motion.a
+                key={index}
+                href={link}
+                target="_blank" // Open link in a new tab
+                rel="noopener noreferrer" // Security feature
+                className="text-gray-900 dark:text-gray-300 transition-colors hover:text-blue-600 dark:hover:text-blue-500"
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Icon size={20} />
+              </motion.a>
+            ))}
           </div>
         </div>
       </div>
