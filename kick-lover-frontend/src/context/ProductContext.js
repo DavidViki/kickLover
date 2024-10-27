@@ -52,6 +52,19 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  // Fetch featured products
+  const fetchFeaturedProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/api/products/featured");
+      setProducts(response.data);
+    } catch (error) {
+      setError(error.reponse?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -62,6 +75,7 @@ export const ProductProvider = ({ children }) => {
         fetchProductsByBrand,
         fetchProductById,
         fetchProductsByCategory,
+        fetchFeaturedProducts,
       }}
     >
       {children}

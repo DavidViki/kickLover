@@ -9,6 +9,7 @@ const {
   getProductsByCategory,
   getProductsByBrand,
   getProductById,
+  getFeaturedProducts,
 } = require("../controllers/productController");
 const { protect, admin } = require("../middleware/authMiddleware");
 
@@ -46,6 +47,11 @@ router.get("/category/:category", getProductsByCategory);
 // @route GET /api/products/brand/:brand
 // @access Public
 router.get("/brand/:brand", getProductsByBrand);
+
+// @desc Get featured products
+// @route GET /api/products/featured
+// @access Public
+router.get("/featured", getFeaturedProducts);
 
 // @desc Get product by ID
 // @route GET /api/products/:id

@@ -181,6 +181,22 @@ const getProductById = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc Get featured products
+// @route GET /api/products/featured
+// @access Public
+const getFeaturedProducts = asyncHandler(async (req, res) => {
+  // Fetch 10 products from the database
+  const products = await Product.find().limit(10);
+
+  // Check if products were found
+  if (!products.length) {
+    return res.status(404).json({ message: "No products found" });
+  }
+
+  // Send the products back to the client
+  res.json(products);
+});
+
 module.exports = {
   addProduct,
   updateProduct,
@@ -190,4 +206,5 @@ module.exports = {
   getProductsByCategory,
   getProductsByBrand,
   getProductById,
+  getFeaturedProducts,
 };

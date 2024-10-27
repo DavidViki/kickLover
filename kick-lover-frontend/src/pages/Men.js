@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import SneakerCard from "../components/SneakerCard";
 import { useProductContext } from "../context/ProductContext";
+import { motion } from "framer-motion";
 
 const Men = () => {
   const { products, fetchProductsByCategory, loading } = useProductContext();
@@ -23,7 +24,13 @@ const Men = () => {
   }
 
   return (
-    <div className="container mx-auto min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
+    <motion.div
+      className="container mx-auto min-h-screen p-4 bg-gray-100 dark:bg-gray-900"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
+      transition={{ duration: 0.5 }}
+    >
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
         Men's Sneakers
       </h1>
@@ -32,7 +39,7 @@ const Men = () => {
           <SneakerCard key={product._id} product={product} />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
