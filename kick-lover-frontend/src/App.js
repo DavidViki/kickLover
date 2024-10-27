@@ -16,6 +16,10 @@ import { ProductProvider } from "./context/ProductContext";
 import Adidas from "./pages/Adidas";
 import Reebok from "./pages/Reebok";
 import Puma from "./pages/Puma";
+import AboutUs from "./components/Footer/AboutUs";
+import Footer from "./components/Footer";
+import Contact from "./components/Footer/Contact";
+import FAQ from "./components/Footer/FAQ";
 
 const App = () => {
   return (
@@ -36,7 +40,12 @@ const App = () => {
               <Route path="/reebok" element={<Reebok />} />
               <Route path="/puma" element={<Puma />} />
               <Route path="/sneakers/:id" element={<SneakerPage />} />
+              <Route path="/aboutus" element={<AboutUs />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="faq" element={<FAQ />} />
             </Routes>
+            <hr className="border-t border-gray-300 dark:border-gray-700 my-4" />
+            <Footer />
           </ProductProvider>
         </AdminProductProvider>
       </AuthProvider>
