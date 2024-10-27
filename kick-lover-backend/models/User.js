@@ -47,6 +47,9 @@ userSchema.pre("save", async function (next) {
 
 // Method to compare passwords
 userSchema.methods.matchPassword = async function (enteredPassword) {
+  if (!enteredPassword) {
+    throw new Error("Entered password is required for comparison.");
+  }
   return await bcrypt.compare(enteredPassword, this.password);
 };
 

@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Autofill styles for light mode */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  background-color: #ffffff !important; /* Light mode autofill background */
+  color: #000000 !important; /* Light mode text color */
+  -webkit-text-fill-color: #000000 !important; /* Ensure text color is correct */
+  transition: background-color 5000s ease-in-out 0s; /* Prevent flashing */
+}
+
+/* Autofill styles for dark mode */
+.dark input:-webkit-autofill,
+.dark textarea:-webkit-autofill,
+.dark select:-webkit-autofill {
+  background-color: #374151 !important; /* Tailwind gray-700 */
+  color: #ffffff !important; /* Dark mode text color */
+  -webkit-text-fill-color: #ffffff !important; /* Ensure text color in dark mode */
+  transition: background-color 5000s ease-in-out 0s; /* Prevent flashing */
+}
+
+/* Forcing autofill to inherit the text color and fixing the background color */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  box-shadow: 0 0 0 1000px #ffffff inset !important; /* Light mode box shadow */
+}
+
+.dark input:-webkit-autofill,
+.dark textarea:-webkit-autofill,
+.dark select:-webkit-autofill {
+  box-shadow: 0 0 0 1000px #374151 inset !important; /* Dark mode box shadow for gray-700 */
+}

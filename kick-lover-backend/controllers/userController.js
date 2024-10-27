@@ -13,7 +13,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (userExists) {
     res.status(400).json({
-      success: false,
       message: "User already exists",
     });
   } else {
@@ -26,17 +25,12 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (user) {
       res.status(201).json({
-        success: true,
-        message: "Registration successful",
-        _id: user._id,
-        username: user.username,
-        email: user.email,
+        token: generateToken(user._id, user.isAdmin),
+        userId: user._id,
         isAdmin: user.isAdmin,
-        token: generateToken(user._id),
       });
     } else {
       res.status(400).json({
-        success: false,
         message: "Invalid user data",
       });
     }
@@ -49,25 +43,28 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-
-  // Check if user exists and password matches
-  if (user && (await user.matchPassword(password))) {
-    res.status(200).json({
-      success: true,
-      message: "Login successful",
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: generateToken(user._id),
-    });
-  } else {
-    res.status(401).json({
-      success: false,
-      message: "Invalid email or password",
-    });
+  // Check if email and password are provided
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
   }
+
+  // Check if the user exists
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  // Validate password
+  const isMatch = await user.matchPassword(password);
+  if (!isMatch) {
+    return res.status(400).json({ message: "Invalid credentials" });
+  }
+
+  // Generate JWT token
+  const token = generateToken(user._id, user.isAdmin);
+
+  // Respond with the token and user data
+  res.status(200).json({ token, userId: user._id, isAdmin: user.isAdmin });
 });
 
 // @desc Get user profile
@@ -79,10 +76,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     res.status(200).json({
       success: true,
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      isAdmin: user.isAdmin,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
     });
   } else {
     res.status(404).json({
@@ -110,11 +109,13 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Profile updated successfully",
-      _id: updatedUser._id,
-      username: updatedUser.username,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
       token: generateToken(updatedUser._id),
+      user: {
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      },
     });
   } else {
     res.status(404).json({

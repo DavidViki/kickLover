@@ -23,9 +23,9 @@ router.post("/", protect, admin, addProduct);
 router.put("/:id", protect, admin, updateProduct);
 
 // @desc Restock an existing product
-// @route PATCH /api/products/:id/restock
+// @route PATCH /api/products/restock
 // @access Private/Admin
-router.patch("/:id/restock", protect, admin, restockProduct);
+router.patch("/restock", protect, admin, restockProduct);
 
 // @desc Delete a product
 // @route DELETE /api/products/:id
@@ -35,7 +35,7 @@ router.delete("/:id", protect, admin, deleteProduct);
 // @desc Get all products
 // @route GET /api/products
 // @access Public
-router.delete("/", getAllProducts);
+router.get("/", getAllProducts);
 
 // @desc Get products by category
 // @route GET /api/products/category/:category
@@ -45,7 +45,7 @@ router.get("/category/:category", getProductsByCategory);
 // @desc Get products by brand
 // @route GET /api/products/brand/:brand
 // @access Public
-router.get("/category/:category", getProductsByBrand);
+router.get("/brand/:brand", getProductsByBrand);
 
 // @desc Get product by ID
 // @route GET /api/products/:id

@@ -1,36 +1,47 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
-// import Footer from "./components/Footer";
-// import Home from './pages/Home';
-// import Men from './pages/Men';
-// import Women from './pages//Women';
-// import Brands from './pages/Brands';
-// import ProductDetails from './pages/ProductDetails';
-// import Cart from './pages/Cart';
-// import Login from './pages/Login';
-// import Register from './pages/Register';
-// import Profile from './pages/Profile';
-// import AdminDashboard from './pages/AdminDashboard';
+import React from "react";
+import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import { Route, Routes } from "react-router-dom";
+import Navbar from "./components/navbar/Navbar";
+import Home from "./pages/Home";
+import Men from "./pages/Men";
+import Women from "./pages/Women";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Admin from "./pages/Admin";
+import Nike from "./pages/Nike";
+import SneakerPage from "./pages/SneakerPage";
+import { AdminProductProvider } from "./context/AdminProductContext";
+import { ProductProvider } from "./context/ProductContext";
+import Adidas from "./pages/Adidas";
+import Reebok from "./pages/Reebok";
+import Puma from "./pages/Puma";
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <Navbar />
-      {/* <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/men" element={<Men />} />
-        <Route path="/women" element={<Women />} />
-        <Route path="/brands" element={<Brands />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-      </Routes> */}
-    </Router>
+    <ThemeProvider>
+      <AuthProvider>
+        <AdminProductProvider>
+          <ProductProvider>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/men" element={<Men />} />
+              <Route path="/women" element={<Women />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/nike" element={<Nike />} />
+              <Route path="/adidas" element={<Adidas />} />
+              <Route path="/reebok" element={<Reebok />} />
+              <Route path="/puma" element={<Puma />} />
+              <Route path="/sneakers/:id" element={<SneakerPage />} />
+            </Routes>
+          </ProductProvider>
+        </AdminProductProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;

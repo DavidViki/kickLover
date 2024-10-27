@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import SneakerCard from "../components/SneakerCard";
 import { useProductContext } from "../context/ProductContext";
 
-const Men = () => {
-  const { products, fetchProductsByCategory, loading } = useProductContext();
+const Nike = () => {
+  const { products, fetchProductsByBrand, loading } = useProductContext();
 
   useEffect(() => {
-    fetchProductsByCategory("men");
+    fetchProductsByBrand("Nike");
   }, []);
 
   if (loading) {
@@ -25,7 +25,7 @@ const Men = () => {
   return (
     <div className="container mx-auto min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-        Men's Sneakers
+        Nike Sneakers
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
@@ -36,4 +36,4 @@ const Men = () => {
   );
 };
 
-export default Men;
+export default Nike;

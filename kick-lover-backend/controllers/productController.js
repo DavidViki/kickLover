@@ -9,18 +9,8 @@ const addProduct = asyncHandler(async (req, res) => {
     req.body;
 
   // Check if all required fields are provided
-  if (
-    !brand ||
-    !name ||
-    !description ||
-    !price ||
-    !imageUrl ||
-    !category ||
-    !sizes
-  ) {
-    res
-      .status(400)
-      .json({ success: false, message: "Please provide all required fields" });
+  if (!brand || !name || !price || !imageUrl || !category || !sizes) {
+    res.status(400).json({ message: "Please provide all required fields" });
     return;
   }
 
@@ -36,8 +26,6 @@ const addProduct = asyncHandler(async (req, res) => {
   });
 
   res.status(201).json({
-    success: true,
-    message: "Product created successfully",
     product,
   });
 });
@@ -54,7 +42,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(id);
 
   if (!product) {
-    res.status(404).json({ success: false, message: "Product not found" });
+    res.status(404).json({ message: "Product not found" });
     return;
   }
 
@@ -70,45 +58,47 @@ const updateProduct = asyncHandler(async (req, res) => {
   await product.save();
 
   res.json({
-    success: true,
-    message: "Product updated successfully",
     product,
   });
 });
 
 // @desc Restock an existing product
-// @route PATCH /api/products/:id/restock
+// @route PATCH /api/products/restock
 // @access Private/Admin
-const restockProduct = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { sizes } = req.body;
+const restockProduct = async (req, res) => {
+  const { productId, sizes } = req.body;
 
-  // Find the product
-  const product = await Product.findById(id);
+  try {
+    // Find the product by ID
+    const product = await Product.findById(productId);
 
-  if (!product) {
-    res.status(404).json({ success: false, message: "Product not found" });
-    return;
-  }
-
-  // Update sizes quantities
-  sizes.forEach((size) => {
-    const existingSize = product.sizes.find((s) => s.size === size.size);
-    if (existingSize) {
-      existingSize.quantity += size.quantity;
-    } else {
-      product.sizes.push(size);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
     }
-  });
+    // Iterate through each size in the request body
+    for (const [size, quantity] of Object.entries(sizes)) {
+      // Check if the size already exists in the product
+      const currentStock = product.sizes.get(size) || 0; // If size doesn't exist, set to 0
 
-  await product.save();
+      // Add the new quantity to the current stock
+      const updatedStock = currentStock + Number(quantity);
 
-  res.json({
-    success: true,
-    message: "Product restocked successfully",
-    product,
-  });
-});
+      // Update the product's size map
+      product.sizes.set(size, updatedStock);
+    }
+
+    // Save the updated product
+    await product.save();
+
+    res
+      .status(200)
+      .json({ message: "Product restocked successfully", product });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error restocking product", error: error.message });
+  }
+};
 
 // @desc Delete a product
 // @route DELETE /api/products/:id
@@ -116,30 +106,26 @@ const restockProduct = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  // Find and delete the product
-  const product = await Product.findById(id);
+  // Find product by ID and delete it
+  const deletedProduct = await Product.findByIdAndDelete(id);
 
-  if (!product) {
-    res.status(404).json({ success: false, message: "Product not found" });
-    return;
+  // If no product is found, send a 404 response
+  if (!deletedProduct) {
+    res.status(404);
+    throw new Error("Product not found");
   }
 
-  await product.remove();
-
-  res.json({
-    success: true,
-    message: "Product deleted successfully",
-  });
+  // Send success response
+  res.status(200).json({ message: "Product deleted successfully" });
 });
 
 // @desc Get all products
 // @route GET /api/products
 // @access Public
 const getAllProducts = asyncHandler(async (req, res) => {
-  const product = await Product.find({});
+  const products = await Product.find({});
 
   res.json({
-    success: true,
     products,
   });
 });
@@ -152,14 +138,11 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
   const products = await Product.find({ category });
 
   if (!products.length) {
-    res
-      .status(404)
-      .json({ success: false, message: "No products found for this category" });
+    res.status(404).json({ message: "No products found for this category" });
     return;
   }
 
   res.json({
-    success: true,
     products,
   });
 });
@@ -172,14 +155,11 @@ const getProductsByBrand = asyncHandler(async (req, res) => {
   const products = await Product.find({ brand });
 
   if (!products.length) {
-    res
-      .status(404)
-      .json({ success: false, message: "No products found for this brand" });
+    res.status(404).json({ message: "No products found for this brand" });
     return;
   }
 
   res.json({
-    succes: true,
     products,
   });
 });
@@ -192,12 +172,11 @@ const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(id);
 
   if (!product) {
-    res.status(404).json({ success: false, message: "Product not found" });
+    res.status(404).json({ message: "Product not found" });
     return;
   }
 
   res.json({
-    success: true,
     product,
   });
 });
