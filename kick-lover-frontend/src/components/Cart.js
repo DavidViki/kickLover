@@ -11,8 +11,12 @@ const Cart = () => {
     return <div>Loading</div>;
   }
 
-  const handleRemoveFromCart = (itemId) => {
-    dispatch({ type: "REMOVE_FROM_CART", payload: { _id: itemId } });
+  const handleDecreaseQuantity = (itemId, size) => {
+    dispatch({ type: "DECREASE_QUANTITY", payload: { _id: itemId, size } });
+  };
+
+  const handleRemoveFromCart = (itemId, size) => {
+    dispatch({ type: "REMOVE_FROM_CART", payload: { _id: itemId, size } });
   };
 
   const totalPrice = cartItems.reduce(
@@ -42,7 +46,7 @@ const Cart = () => {
         <div className="flex-grow overflow-y-auto">
           {cartItems.map((item) => (
             <motion.div
-              key={item._id}
+              key={`${item._id}-${item.size}`}
               className="flex items-center justify-between mb-4 p-4 bg-white dark:bg-gray-700 rounded-md shadow-md"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -57,19 +61,29 @@ const Cart = () => {
                 />
                 <div>
                   <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">
-                    {item.name}
+                    {item.name} (Size: {item.size})
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">
                     {item.quantity} x ${item.price.toFixed(2)}
                   </p>
                 </div>
               </div>
-              <button
-                className="bg-red-500 text-white rounded-md px-3 py-1 hover:bg-red-600 transition"
-                onClick={() => handleRemoveFromCart(item._id)}
-              >
-                Remove
-              </button>
+              <div className="flex items-center">
+                {item.quantity > 1 && ( // Only show decrease button if quantity > 1
+                  <button
+                    className="bg-yellow-500 text-white rounded-md px-3 py-1 hover:bg-yellow-600 transition mr-2"
+                    onClick={() => handleDecreaseQuantity(item._id, item.size)}
+                  >
+                    -
+                  </button>
+                )}
+                <button
+                  className="bg-red-500 text-white rounded-md px-3 py-1 hover:bg-red-600 transition"
+                  onClick={() => handleRemoveFromCart(item._id, item.size)}
+                >
+                  Remove
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
