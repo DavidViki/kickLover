@@ -4,6 +4,74 @@ import { motion } from "framer-motion";
 const Modal = ({ isOpen, type, message, onClose }) => {
   if (!isOpen) return null;
 
+  const SuccessIcon = () => (
+    <motion.svg
+      className="w-6 h-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <motion.path
+        d="M5 13l4 4L19 7"
+        stroke="green"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.5 }}
+      />
+    </motion.svg>
+  );
+
+  const ErrorIcon = () => (
+    <motion.svg
+      className="w-8 h-8"
+      fill="none"
+      viewBox="0 0 24 24"
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="rgba(255, 0, 0, 0.6)"
+        strokeWidth="2"
+        fill="rgba(255, 0, 0, 0.1)"
+      />
+      <motion.line
+        x1="8"
+        y1="8"
+        x2="16"
+        y2="16"
+        stroke="red"
+        strokeWidth="2"
+        strokeLinecap="round"
+        initial={{ x1: 12, y1: 12, x2: 12, y2: 12 }}
+        animate={{ x1: 8, y1: 8, x2: 16, y2: 16 }}
+        transition={{ duration: 0.3 }}
+      />
+      <motion.line
+        x1="8"
+        y1="16"
+        x2="16"
+        y2="8"
+        stroke="red"
+        strokeWidth="2"
+        strokeLinecap="round"
+        initial={{ x1: 12, y1: 12, x2: 12, y2: 12 }}
+        animate={{ x1: 8, y1: 16, x2: 16, y2: 8 }}
+        transition={{ duration: 0.3 }}
+      />
+    </motion.svg>
+  );
+
   return (
     <motion.div
       className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 backdrop-blur-sm dark:bg-gray-900 dark:bg-opacity-60"
@@ -21,14 +89,31 @@ const Modal = ({ isOpen, type, message, onClose }) => {
         exit={{ scale: 0.8 }}
         transition={{ duration: 0.3 }}
       >
-        <h3
-          className={`text-2xl font-bold ${
-            type === "success" ? "text-green-500" : "text-red-500"
-          } dark:${type === "success" ? "text-green-300" : "text-red-300"}`}
-        >
-          {type === "success" ? "Success!" : "Error"}
-        </h3>
-        <p className="mt-4 text-gray-700 dark:text-gray-300">{message}</p>
+        {/* Conditional rendering based on message type */}
+        {type === "success" && (
+          <motion.div
+            className="flex items-center text-green-600"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <SuccessIcon />
+            <span>{message}</span>
+          </motion.div>
+        )}
+        {type === "error" && (
+          <motion.div
+            className="flex items-center text-red-600"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ErrorIcon />
+            <span>{message}</span>
+          </motion.div>
+        )}
         <div className="mt-6 flex justify-end">
           <button
             onClick={onClose}

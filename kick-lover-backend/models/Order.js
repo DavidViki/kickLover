@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Schema for individual items in the order
 const orderItemSchema = mongoose.Schema({
   name: { type: String, required: true },
   quantity: { type: Number, required: true },
@@ -14,7 +13,14 @@ const orderItemSchema = mongoose.Schema({
   },
 });
 
-// Schema for the order
+const orderStatuses = {
+  PENDING: "Pending",
+  CONFIRMED: "Confirmed",
+  SHIPPED: "Shipped",
+  DELIVERED: "Delivered",
+  CANCELLED: "Cancelled",
+};
+
 const orderSchema = mongoose.Schema(
   {
     user: {
@@ -22,25 +28,28 @@ const orderSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
-    orderItems: [orderItemSchema], // Array of items in the order
+    orderItems: [orderItemSchema],
     shippingAddress: {
       address: { type: String, required: true },
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
     },
-    paymentMethod: {
-      type: String,
-      required: true,
+    paymentDetails: {
+      method: { type: String, required: true },
+      transactionId: { type: String, required: true },
+      status: {
+        type: String,
+        enum: ["Pending", "Completed", "Failed"],
+        default: "Pending",
+      },
     },
-    totalPrice: {
-      type: Number,
-      required: true,
-    },
+    discount: { type: Number, default: 0 },
+    totalPrice: { type: Number, required: true },
     orderStatus: {
       type: String,
-      enum: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"],
-      default: "Pending",
+      enum: Object.values(orderStatuses),
+      default: orderStatuses.PENDING,
       required: true,
     },
     confirmedAt: { type: Date },
@@ -48,23 +57,29 @@ const orderSchema = mongoose.Schema(
     deliveredAt: { type: Date },
     cancelledAt: { type: Date },
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true }
 );
 
-// Pre-save middleware to automatically update status dates
+orderSchema.methods.calculateTotalPrice = function () {
+  this.totalPrice = this.orderItems.reduce((total, item) => {
+    return total + item.price * item.quantity;
+  }, 0);
+};
+
 orderSchema.pre("save", function (next) {
+  this.calculateTotalPrice();
   if (this.isModified("orderStatus")) {
     switch (this.orderStatus) {
-      case "Confirmed":
+      case orderStatuses.CONFIRMED:
         this.confirmedAt = new Date();
         break;
-      case "Shipped":
+      case orderStatuses.SHIPPED:
         this.shippedAt = new Date();
         break;
-      case "Delivered":
+      case orderStatuses.DELIVERED:
         this.deliveredAt = new Date();
         break;
-      case "Cancelled":
+      case orderStatuses.CANCELLED:
         this.cancelledAt = new Date();
         break;
       default:
@@ -74,7 +89,6 @@ orderSchema.pre("save", function (next) {
   next();
 });
 
-// Export the Order model
 const Order = mongoose.model("Order", orderSchema);
 
 module.exports = Order;
