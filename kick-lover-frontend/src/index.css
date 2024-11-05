@@ -79,6 +79,11 @@ body.dark {
 
 .slick-prev {
   color: black;
+  left:-15px;
+}
+
+.slick-next {
+  right: -15px;
 }
 
 .slick-prev:hover,

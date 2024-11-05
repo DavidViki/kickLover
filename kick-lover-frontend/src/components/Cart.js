@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import CartContext from "../context/CartContext";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const { cartItems, dispatch } = useContext(CartContext);
@@ -53,7 +54,10 @@ const Cart = () => {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="flex items-center">
+              <Link
+                to={`/sneakers/${item._id}`}
+                className="flex items-center flex-grow"
+              >
                 <img
                   src={item.imageUrl}
                   alt={item.name}
@@ -67,7 +71,7 @@ const Cart = () => {
                     {item.quantity} x ${item.price.toFixed(2)}
                   </p>
                 </div>
-              </div>
+              </Link>
               <div className="flex items-center">
                 {item.quantity > 1 && ( // Only show decrease button if quantity > 1
                   <button

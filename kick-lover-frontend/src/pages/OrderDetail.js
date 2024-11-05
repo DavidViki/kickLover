@@ -4,6 +4,7 @@ import OrderContext from "../context/OrderContext";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import Modal from "../components/Modal";
+import { Link } from "react-router-dom";
 
 const OrderDetail = () => {
   const { id } = useParams();
@@ -141,16 +142,18 @@ const OrderDetail = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <p className="text-gray-800 dark:text-gray-200">{item.name}</p>
-              <p className="text-gray-600 dark:text-gray-400">
-                Quantity: {item.quantity}
-              </p>
-              <p className="text-gray-600 dark:text-gray-400">
-                Size: {item.size}
-              </p>
-              <p className="text-gray-600 dark:text-gray-400">
-                Price: ${item.price.toFixed(2)}
-              </p>
+              <Link to={`/sneakers/${item.product}`}>
+                <p className="text-gray-800 dark:text-gray-200">{item.name}</p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Quantity: {item.quantity}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Size: {item.size}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Price: ${item.price.toFixed(2)}
+                </p>
+              </Link>
             </motion.li>
           ))}
         </ul>
