@@ -84,6 +84,41 @@ const OrderDetail = () => {
       <h1 className="text-3xl font-semibold mb-6 text-gray-800 dark:text-gray-200 text-center">
         Order Details
       </h1>
+
+      {/* Customer and Shipping Information */}
+      <motion.div
+        className="p-4 border rounded dark:border-gray-700 dark:bg-gray-800 bg-gray-100 mb-4"
+        whileHover={{ scale: 1.02 }}
+      >
+        <h2 className="text-xl font-medium mb-2 text-gray-800 dark:text-gray-200">
+          Customer Details
+        </h2>
+        <p className="text-gray-800 dark:text-gray-200">
+          <strong>User ID: </strong> {order.user._id}
+        </p>
+        <h3 className="text-lg font-medium text-gray-700 dark:text-gray-300 mt-4 mb-2">
+          Shipping Information
+        </h3>
+        <div className="space-y-2">
+          <p className="text-gray-600 dark:text-gray-400">
+            <strong>Address: </strong>
+            {order.shippingAddress.address}
+          </p>
+          <p className="text-gray-600 dark:text-gray-400">
+            <strong>City: </strong>
+            {order.shippingAddress.city}
+          </p>
+          <p className="text-gray-600 dark:text-gray-400">
+            <strong>Postal Code: </strong>
+            {order.shippingAddress.postalCode}
+          </p>
+          <p className="text-gray-600 dark:text-gray-400">
+            <strong>Country: </strong>
+            {order.shippingAddress.country}
+          </p>
+        </div>
+      </motion.div>
+
       <div className="text-center mb-4">
         <p className="text-gray-600 dark:text-gray-400">
           Order ID: {order._id}
@@ -95,24 +130,24 @@ const OrderDetail = () => {
           Created At: {format(new Date(order.createdAt), "PPP")}
         </p>
         {/* Conditionally render the status date based on the order status */}
-        {order.orderStatus === "Cancelled" && (
+        {order.cancelledAt && (
           <p className="text-gray-600 dark:text-gray-400">
             Cancelled At: {format(new Date(order.cancelledAt), "PPP")}
           </p>
         )}
-        {order.orderStatus === "Delivered" && (
-          <p className="text-gray-600 dark:text-gray-400">
-            Delivered At: {format(new Date(order.deliveredAt), "PPP")}
-          </p>
-        )}
-        {order.orderStatus === "Confirmed" && (
+        {order.confirmedAt && (
           <p className="text-gray-600 dark:text-gray-400">
             Confirmed At: {format(new Date(order.confirmedAt), "PPP")}
           </p>
         )}
-        {order.orderStatus === "Shipped" && (
+        {order.shippedAt && (
           <p className="text-gray-600 dark:text-gray-400">
             Shipped At: {format(new Date(order.shippedAt), "PPP")}
+          </p>
+        )}
+        {order.deliveredAt && (
+          <p className="text-gray-600 dark:text-gray-400">
+            Delivered At: {format(new Date(order.deliveredAt), "PPP")}
           </p>
         )}
       </div>
