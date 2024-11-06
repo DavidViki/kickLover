@@ -32,9 +32,9 @@ const ViewOrders = () => {
       <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">
         View Orders
       </h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-700">
+      <div className="overflow-x-auto overflow-y-auto max-h-screen w-full">
+        <table className="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-700 top-0 z-10">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Order ID

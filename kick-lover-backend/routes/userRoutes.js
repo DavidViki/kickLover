@@ -7,6 +7,7 @@ const {
   updateUserProfile,
   deleteUserAccount,
   deleteUserByAdmin,
+  getAllUsers,
 } = require("../controllers/userController");
 const { protect, admin } = require("../middleware/authMiddleware");
 
@@ -39,5 +40,10 @@ router.delete("/profile", protect, deleteUserAccount);
 // @route DELETE /api/users/:id
 // @access Private/Admin
 router.delete("/:id", protect, admin, deleteUserByAdmin);
+
+// @desc Fetch all users
+// @route GET /api/users
+// @access Private/Admin
+router.get("/", protect, admin, getAllUsers);
 
 module.exports = router;

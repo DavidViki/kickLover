@@ -4,7 +4,8 @@ import AdminProductContext from "../../context/AdminProductContext";
 import Modal from "../Modal";
 
 const AddProduct = () => {
-  const { addProduct, loading } = useContext(AdminProductContext);
+  const { addProduct, loading, fetchProducts } =
+    useContext(AdminProductContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(null); // 'success' or 'error'
@@ -45,6 +46,8 @@ const AddProduct = () => {
     try {
       await addProduct(productData);
 
+      fetchProducts();
+
       setModalType("success");
       setModalMessage("Product added successfully!");
       setIsModalOpen(true);
@@ -71,8 +74,8 @@ const AddProduct = () => {
       // If there is an error, show the error message from the context
       setModalType("error");
       setModalMessage(
-        error ||
-          error.response.message ||
+        error?.response?.data?.message ||
+          error?.message ||
           "Failed to add product. Please try again!"
       );
       setIsModalOpen(true);

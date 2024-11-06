@@ -165,6 +165,18 @@ const deleteUserByAdmin = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc Fetch all users
+// @route GET /api/users
+// @access Private/Admin
+const getAllUsers = asyncHandler(async (req, res) => {
+  try {
+    const users = await User.find({}, "-password"); // Exclude the password field
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to retrieve users" });
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -172,4 +184,5 @@ module.exports = {
   updateUserProfile,
   deleteUserAccount,
   deleteUserByAdmin,
+  getAllUsers,
 };

@@ -83,11 +83,14 @@ export const AdminProductProvider = ({ children }) => {
       };
 
       // Send the restock request to the backend
-      const response = await axios.patch("/api/products/restock", {
-        productId,
-        sizes: newStock,
-        config,
-      });
+      const response = await axios.patch(
+        "/api/products/restock",
+        {
+          productId,
+          sizes: newStock,
+        },
+        config
+      );
 
       // Update the products in the context
       const updatedProduct = response.data;
@@ -130,6 +133,7 @@ export const AdminProductProvider = ({ children }) => {
         updateProduct,
         restockProduct,
         deleteProduct,
+        fetchProducts,
       }}
     >
       {children}

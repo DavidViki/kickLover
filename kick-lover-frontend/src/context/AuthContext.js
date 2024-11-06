@@ -101,9 +101,51 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  // Fetch all users by Admin
+  const fetchAllUsers = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/api/users");
+      return response.data;
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete a user by Admin
+  const deleteUser = async (userId) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axios.delete(`/api/users/${userId}`, config);
+      return response.data;
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, register, login, logout, loading, error }}
+      value={{
+        user,
+        register,
+        login,
+        logout,
+        deleteUser,
+        fetchAllUsers,
+        loading,
+        error,
+      }}
     >
       {children}
     </AuthContext.Provider>

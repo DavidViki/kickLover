@@ -4,7 +4,7 @@ import AdminProductContext from "../../context/AdminProductContext";
 import Modal from "../Modal";
 
 const RestockProduct = () => {
-  const { products, restockProduct, loading, error } =
+  const { products, restockProduct, fetchProducts, loading } =
     useContext(AdminProductContext);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [newStock, setNewStock] = useState({});
@@ -48,6 +48,8 @@ const RestockProduct = () => {
     e.preventDefault();
     try {
       restockProduct(selectedProduct._id, newStock); // Call restockProduct function
+
+      fetchProducts();
       // Show success modal
       setModalType("success");
       setModalMessage("Product restocked successfully!");

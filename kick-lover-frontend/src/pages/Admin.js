@@ -8,6 +8,8 @@ import ViewOrders from "../components/Admin/ViewOrders";
 import UpdateOrderStatus from "../components/Admin/UpdateOrderStatus";
 import CancelOrders from "../components/Admin/CancelOrders";
 import DeleteOrders from "../components/Admin/DeleteOrders";
+import ViewUsers from "../components/Admin/ViewUsers";
+import DeleteUsers from "../components/Admin/DeleteUser";
 
 // Admin Dashboard Component
 const Admin = () => {
@@ -35,7 +37,7 @@ const Admin = () => {
       "Cancel Orders",
       "Delete Orders",
     ],
-    users: ["View Users", "Manage Users"],
+    users: ["View Users", "Delete Users"],
   };
 
   return (
@@ -173,10 +175,14 @@ const Admin = () => {
                 <div>
                   {/* Show Users-related components */}
                   {subOption === "View Users" && (
-                    <div>View Users component goes here</div>
+                    <div>
+                      <ViewUsers />
+                    </div>
                   )}
-                  {subOption === "Manage Users" && (
-                    <div>Manage Users component goes here</div>
+                  {subOption === "Delete Users" && (
+                    <div>
+                      <DeleteUsers />
+                    </div>
                   )}
                 </div>
               )}

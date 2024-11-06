@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { motion } from "framer-motion";
 import AdminProductContext from "../../context/AdminProductContext";
 import Modal from "../Modal";
 
 const UpdateProduct = () => {
-  const { products, updateProduct, loading } = useContext(AdminProductContext);
+  const { products, updateProduct, fetchProducts, loading } =
+    useContext(AdminProductContext);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,6 +67,8 @@ const UpdateProduct = () => {
         ...formData,
       };
       await updateProduct(updatedProduct);
+
+      fetchProducts();
 
       // Show success modal
       setModalType("success");

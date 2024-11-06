@@ -6,7 +6,6 @@ import Modal from "../Modal";
 const CancelOrders = () => {
   const { state, cancelOrder, loading, fetchAllOrders } =
     useContext(OrderContext);
-  const [orderIdToCancel, setOrderIdToCancel] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(null);
@@ -61,7 +60,7 @@ const CancelOrders = () => {
       <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">
         Cancel Order
       </h2>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto overflow-y-auto max-h-screen">
         <table className="min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
             <tr>
