@@ -68,7 +68,9 @@ const createOrder = asyncHandler(async (req, res) => {
  * @access Private (Admin only)
  */
 const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find().populate("user", "id name");
+  const orders = await Order.find()
+    .populate("user", "id name")
+    .sort({ createdAt: -1 });
   res.json(orders);
 });
 
@@ -89,24 +91,36 @@ const getOrderById = asyncHandler(async (req, res) => {
 });
 
 /**
- * @desc Update order to delivered
- * @route PUT /api/orders/:id/deliver
+ * @desc Update order status
+ * @route PUT /api/orders/:id
  * @access Private (Admin only)
  */
-const updateOrderToDelivered = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id);
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { newStatus } = req.body;
+    const order = await Order.findById(req.params.id);
 
-  if (order) {
-    order.orderStatus = "Delivered";
-    order.deliveredAt = Date.now();
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
 
-    const updatedOrder = await order.save();
-    res.json(updatedOrder);
-  } else {
-    res.status(404);
-    throw new Error("Order not found");
+    // Prevent changing status if it's already cancelled
+    if (order.orderStatus === "Cancelled") {
+      return res
+        .status(400)
+        .json({ message: "Cannot update a cancelled order" });
+    }
+
+    // Set the new status (pre-save hook will handle timestamps)
+    order.orderStatus = newStatus;
+
+    await order.save();
+
+    res.json({ message: `Order status updated to ${newStatus}`, order });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-});
+};
 
 /**
  * @desc Delete an order
@@ -117,7 +131,7 @@ const deleteOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
   if (order) {
-    await order.remove();
+    await Order.deleteOne({ _id: order._id });
     res.json({ message: "Order removed" });
   } else {
     res.status(404);
@@ -189,8 +203,8 @@ module.exports = {
   createOrder,
   getOrders,
   getOrderById,
-  updateOrderToDelivered,
   deleteOrder,
   getUserOrders,
   cancelOrder,
+  updateOrderStatus,
 };

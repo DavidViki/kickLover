@@ -3,10 +3,10 @@ const {
   createOrder,
   getOrders,
   getOrderById,
-  updateOrderToDelivered,
   deleteOrder,
   getUserOrders,
   cancelOrder,
+  updateOrderStatus,
 } = require("../controllers/orderController");
 const { protect, admin } = require("../middleware/authMiddleware");
 
@@ -22,11 +22,6 @@ router.post("/", protect, createOrder);
 // @access Private (Admin only)
 router.get("/", protect, admin, getOrders);
 
-// @desc Update order to delivered
-// @route PUT /api/orders/:id/deliver
-// @access Private (Admin only)
-router.put("/:id/deliver", protect, admin, updateOrderToDelivered);
-
 // @desc Get user's orders
 // @route GET /api/orders/my-orders
 // @access Private (User must be logged in)
@@ -41,6 +36,11 @@ router.put("/:id/cancel", protect, cancelOrder);
 // @route DELETE /api/orders/:id
 // @access Private (Admin only)
 router.delete("/:id", protect, admin, deleteOrder);
+
+// @desc Update order status
+// @route PUT /api/orders/:id
+// @access Private (Admin only)
+router.put("/:id", protect, admin, updateOrderStatus);
 
 // @desc Get order by ID
 // @route GET /api/orders/:id

@@ -4,6 +4,10 @@ import AddProduct from "../components/Admin/AddProduct";
 import UpdateProduct from "../components/Admin/UpdateProduct";
 import RestockProduct from "../components/Admin/RestockProduct";
 import DeleteProduct from "../components/Admin/DeleteProduct";
+import ViewOrders from "../components/Admin/ViewOrders";
+import UpdateOrderStatus from "../components/Admin/UpdateOrderStatus";
+import CancelOrders from "../components/Admin/CancelOrders";
+import DeleteOrders from "../components/Admin/DeleteOrders";
 
 // Admin Dashboard Component
 const Admin = () => {
@@ -25,7 +29,12 @@ const Admin = () => {
       "Restock Product",
       "Delete Product",
     ],
-    orders: ["View Orders", "Manage Orders"],
+    orders: [
+      "View Orders",
+      "Update Order Status",
+      "Cancel Orders",
+      "Delete Orders",
+    ],
     users: ["View Users", "Manage Users"],
   };
 
@@ -138,10 +147,24 @@ const Admin = () => {
                 <div>
                   {/* Show Orders-related components */}
                   {subOption === "View Orders" && (
-                    <div>View Orders component goes here</div>
+                    <div>
+                      <ViewOrders />
+                    </div>
                   )}
-                  {subOption === "Manage Orders" && (
-                    <div>Manage Orders component goes here</div>
+                  {subOption === "Update Order Status" && (
+                    <div>
+                      <UpdateOrderStatus />
+                    </div>
+                  )}
+                  {subOption === "Cancel Orders" && (
+                    <div>
+                      <CancelOrders />
+                    </div>
+                  )}
+                  {subOption === "Delete Orders" && (
+                    <div>
+                      <DeleteOrders />
+                    </div>
                   )}
                 </div>
               )}
