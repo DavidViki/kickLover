@@ -9,9 +9,15 @@ const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => setMobileMenuOpen(!isMobileMenuOpen);
+
   return (
     <nav className="flex items-center justify-between p-4 bg-gray-150 dark:bg-gray-800 shadow-md">
       <Logo />
+
+      {/* Central Links - Centered on Desktop */}
+      <div className="flex-1 hidden md:flex justify-center">
+        <CentralLinks />
+      </div>
 
       {/* Hamburger Icon for Mobile */}
       <button
@@ -21,9 +27,8 @@ const Navbar = () => {
         {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
       </button>
 
-      {/* Central Links & Auth Links - Hidden on Mobile */}
+      {/* Auth Links and Toggle Switch - Aligned to the right on Desktop */}
       <div className="hidden md:flex items-center space-x-4">
-        <CentralLinks />
         <AuthLinks />
         <ToggleSwitch />
       </div>
