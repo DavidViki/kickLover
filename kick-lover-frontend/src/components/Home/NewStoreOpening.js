@@ -1,4 +1,3 @@
-// NewStoreOpening.js
 import React from "react";
 import { motion } from "framer-motion";
 import Map from "./Map"; // Make sure to import your Map component

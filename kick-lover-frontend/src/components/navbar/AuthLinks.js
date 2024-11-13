@@ -66,7 +66,7 @@ const AuthLinks = ({ handleClick }) => {
             whileTap={{ scale: 0.95 }}
           >
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="text-lg text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-300"
             >
               <FaSignOutAlt /> Logout
