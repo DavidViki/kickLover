@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
-const CentralLinks = () => {
+const CentralLinks = ({ handleClick }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -29,6 +29,7 @@ const CentralLinks = () => {
       {/* Navigation Links */}
       <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
         <Link
+          onClick={handleClick}
           to="/"
           className="text-lg text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-300"
         >
@@ -38,6 +39,7 @@ const CentralLinks = () => {
 
       <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
         <Link
+          onClick={handleClick}
           to="/men"
           className="text-lg text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-300"
         >
@@ -47,6 +49,7 @@ const CentralLinks = () => {
 
       <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
         <Link
+          onClick={handleClick}
           to="/women"
           className="text-lg text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-300"
         >
@@ -74,7 +77,10 @@ const CentralLinks = () => {
               exit={{ opacity: 0, y: -10 }}
               className="absolute mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg py-2 w-32"
             >
-              <li className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+              <li
+                onClick={handleClick}
+                className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
+              >
                 <Link
                   onClick={() => setDropdownOpen(false)}
                   to="/nike"
@@ -83,7 +89,10 @@ const CentralLinks = () => {
                   Nike
                 </Link>
               </li>
-              <li className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+              <li
+                onClick={handleClick}
+                className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
+              >
                 <Link
                   onClick={() => setDropdownOpen(false)}
                   to="/adidas"
@@ -92,7 +101,10 @@ const CentralLinks = () => {
                   Adidas
                 </Link>
               </li>
-              <li className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+              <li
+                onClick={handleClick}
+                className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
+              >
                 <Link
                   onClick={() => setDropdownOpen(false)}
                   to="/reebok"
@@ -101,7 +113,10 @@ const CentralLinks = () => {
                   Reebok
                 </Link>
               </li>
-              <li className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+              <li
+                onClick={handleClick}
+                className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
+              >
                 <Link
                   onClick={() => setDropdownOpen(false)}
                   to="/puma"

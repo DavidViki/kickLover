@@ -10,6 +10,12 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => setMobileMenuOpen(!isMobileMenuOpen);
 
+  const handleLinkClick = () => {
+    if (isMobileMenuOpen) {
+      setMobileMenuOpen(false); // Close mobile menu when a link is clicked
+    }
+  };
+
   return (
     <nav className="flex items-center justify-between p-4 bg-gray-150 dark:bg-gray-800 shadow-md">
       <Logo />
@@ -37,8 +43,8 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-white dark:bg-gray-800 shadow-lg z-10">
           <div className="flex flex-col items-center space-y-4 py-4">
-            <CentralLinks />
-            <AuthLinks />
+            <CentralLinks handleClick={handleLinkClick} />
+            <AuthLinks handleClick={handleLinkClick} />
             <ToggleSwitch />
           </div>
         </div>
