@@ -57,6 +57,20 @@ const DeleteProduct = () => {
     setConfirmDelete(false);
   };
 
+  // Display loading spinner if data is being fetched
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 h-screen">
+        <div
+          className="spinner-border animate-spin inline-block w-12 h-12 border-4 rounded-full border-blue-600"
+          role="status"
+        >
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}

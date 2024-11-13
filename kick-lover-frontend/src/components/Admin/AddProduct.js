@@ -86,6 +86,7 @@ const AddProduct = () => {
     setIsModalOpen(false);
   };
 
+  // Display loading spinner if data is being fetched
   if (loading) {
     return (
       <div className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 h-screen">

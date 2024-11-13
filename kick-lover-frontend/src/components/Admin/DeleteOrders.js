@@ -11,11 +11,12 @@ const DeleteOrders = () => {
   const [modalType, setModalType] = useState(null);
   const [modalMessage, setModalMessage] = useState("");
 
+  // Fetch all orders when the component mounts
   useEffect(() => {
-    // Fetch all orders when the component mounts
     fetchAllOrders();
   }, []);
 
+  // Handle order deletion with success/error feedback
   const handleDeleteOrder = async (orderId) => {
     try {
       await deleteOrder(orderId);
@@ -34,10 +35,12 @@ const DeleteOrders = () => {
     }
   };
 
+  // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
+  // Display loading spinner if data is being fetched
   if (loading) {
     return (
       <div className="flex justify-center items-center bg-gray-100 dark:bg-gray-900 h-screen">
@@ -55,22 +58,22 @@ const DeleteOrders = () => {
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-full mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md max-h-screen overflow-hidden"
+      className="max-w-full mx-auto p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md max-h-screen overflow-hidden"
     >
-      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">
+      <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-white mb-4 sm:mb-6">
         Delete Order
       </h2>
       <div className="overflow-x-auto">
         <table className="min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
             <tr>
-              <th className="w-1/5 px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              <th className="w-1/3 px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Order ID
               </th>
-              <th className="w-1/5 px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              <th className="w-1/3 px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Current Status
               </th>
-              <th className="w-1/5 px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              <th className="w-1/3 px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Delete Order
               </th>
             </tr>
@@ -78,16 +81,16 @@ const DeleteOrders = () => {
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 max-h-screen overflow-y-auto">
             {state.allOrders.map((order) => (
               <motion.tr whileHover={{ scale: 1.02 }} key={order._id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
                   {order._id}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
                   <strong>{order.orderStatus}</strong>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium">
                   <button
                     onClick={() => handleDeleteOrder(order._id)}
-                    className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
+                    className="w-full sm:w-auto px-2 py-1 sm:px-4 sm:py-2 rounded bg-red-500 text-white hover:bg-red-600"
                   >
                     Delete Order
                   </button>
